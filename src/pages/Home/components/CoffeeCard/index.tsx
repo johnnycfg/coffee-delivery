@@ -28,11 +28,11 @@ export function CoffeeCard() {
         <BuySectionActions>
           <QuantitySelector>
             <button>
-              <Minus />
+              <Minus weight="bold" />
             </button>
             1
             <button>
-              <Plus />
+              <Plus weight="bold" />
             </button>
           </QuantitySelector>
           <AddToCartButton>
