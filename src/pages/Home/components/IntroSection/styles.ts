@@ -6,7 +6,7 @@ export const IntroSectionContainer = styled.section`
   justify-content: space-between;
   gap: 3.5rem;
 
-  padding: 6rem 10rem;
+  padding: 6rem 0;
 
   & > div {
     display: flex;

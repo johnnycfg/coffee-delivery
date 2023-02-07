@@ -10,7 +10,7 @@ export const CoffeeListContainer = styled.main`
   display: flex;
   flex-direction: column;
   gap: 4.5rem;
-  padding: 2rem 10rem;
+  padding: 2rem 0;
 
   & > h1 {
     font-family: 'Baloo 2', sans-serif;
@@ -23,6 +23,7 @@ export const CoffeeListContainer = styled.main`
 
 export const CoffeeList = styled.div`
   display: flex;
+  width: 100%;
   gap: 2.5rem 2rem;
   flex-wrap: wrap;
 `
