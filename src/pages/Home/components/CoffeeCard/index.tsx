@@ -1,11 +1,11 @@
-import { Minus, Plus, ShoppingCartSimple } from 'phosphor-react'
+import { ShoppingCartSimple } from 'phosphor-react'
 import { Badge } from '../../../../components/Badge'
+import { QuantitySelector } from '../../../../components/QuantitySelector'
 import {
   AddToCartButton,
   BuySection,
   BuySectionActions,
   CoffeeCardContainer,
-  QuantitySelector,
 } from './styles'
 
 export function CoffeeCard() {
@@ -26,15 +26,7 @@ export function CoffeeCard() {
         </span>
 
         <BuySectionActions>
-          <QuantitySelector>
-            <button>
-              <Minus weight="bold" />
-            </button>
-            1
-            <button>
-              <Plus weight="bold" />
-            </button>
-          </QuantitySelector>
+          <QuantitySelector />
           <AddToCartButton>
             <ShoppingCartSimple weight="fill" />
           </AddToCartButton>

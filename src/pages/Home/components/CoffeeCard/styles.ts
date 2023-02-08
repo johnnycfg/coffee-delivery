@@ -64,37 +64,6 @@ export const BuySectionActions = styled.div`
   gap: 0.5rem;
 `
 
-export const QuantitySelector = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  height: 38px;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: 6px;
-  background: ${(props) => props.theme['base-button']};
-
-  color: ${(props) => props.theme['base-title']};
-
-  button {
-    display: flex;
-    align-items: center;
-
-    border: 0;
-    background-color: transparent;
-
-    svg {
-      color: ${(props) => props.theme.purple};
-      cursor: pointer;
-
-      transition: color 0.2s;
-
-      &:hover {
-        color: ${(props) => props.theme['purple-dark']};
-      }
-    }
-  }
-`
-
 export const AddToCartButton = styled.button`
   width: 38px;
   height: 38px;
