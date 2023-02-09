@@ -1,6 +1,7 @@
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import { useTheme } from 'styled-components'
-import { IntroSectionContainer, RoundedIcon } from './styles'
+import { RoundedIcon } from '../../../../components/RoundedIcon'
+import { IntroSectionContainer } from './styles'
 
 export function IntroSection() {
   const theme = useTheme()

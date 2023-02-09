@@ -11,7 +11,7 @@ export function Header() {
           <MapPin weight="fill" />
           Porto Alegre, RS
         </LocationButton>
-        <CartButton>
+        <CartButton badgeContent={12}>
           <ShoppingCart weight="fill" />
         </CartButton>
       </div>
