@@ -10,6 +10,8 @@ export const defaultTheme = {
   purple: '#8047F8',
   'purple-dark': '#4B2995',
 
+  red: '#DA3B34',
+
   'base-label': '#8D8686',
   'base-text': '#574F4D',
   'base-subtitle': '#403937',
