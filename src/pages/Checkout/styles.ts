@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const CheckoutForm = styled.form`
   display: flex;
@@ -50,15 +50,26 @@ export const AddressSection = styled.div`
     }
   }
 
-  div {
+  & > div {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
   }
 `
+interface FormGroupProps {
+  fullWidth?: boolean
+}
+
+export const FormGroup = styled.div<FormGroupProps>`
+  display: flex;
+  flex-grow: ${(props) => (props.fullWidth ? '1' : '0')};
+  flex-direction: column;
+  gap: 0.5rem;
+`
 
 interface InputProps {
   fullWidth?: boolean
+  error?: boolean
 }
 
 export const Input = styled.input<InputProps>`
@@ -75,6 +86,14 @@ export const Input = styled.input<InputProps>`
     font-size: 0.875rem;
     line-height: 1.2;
   }
+
+  ${(props) => {
+    if (props.error) {
+      return css`
+        box-shadow: 0 0 0 2px ${(props) => props.theme.red};
+      `
+    }
+  }}
 `
 
 export const PaymentSection = styled.div`
@@ -300,6 +319,12 @@ export const ConfirmOrderButton = styled.button`
 
   &:hover {
     background: ${(props) => props.theme['yellow-dark']};
+  }
+
+  &:disabled {
+    background: ${(props) => props.theme['base-button']};
+    color: ${(props) => props.theme['base-subtitle']};
+    cursor: not-allowed;
   }
 `
 
