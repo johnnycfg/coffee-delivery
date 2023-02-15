@@ -6,6 +6,10 @@ export const HeaderContainer = styled.header`
   justify-content: space-between;
   padding: 2rem 0;
 
+  img {
+    cursor: pointer;
+  }
+
   div {
     display: flex;
     gap: 0.875rem;

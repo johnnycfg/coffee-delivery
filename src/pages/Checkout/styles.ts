@@ -29,6 +29,7 @@ export const AddressSection = styled.div`
   width: 100%;
   background: ${(props) => props.theme['base-card']};
   padding: 2.5rem;
+  border-radius: 6px;
 
   header {
     display: flex;
@@ -91,18 +92,35 @@ export const Input = styled.input<InputProps>`
     if (props.error) {
       return css`
         box-shadow: 0 0 0 2px ${(props) => props.theme.red};
+        &:focus {
+          outline: 0;
+          box-shadow: 0 0 0 2px ${(props) => props.theme.red};
+        }
       `
     }
   }}
 `
 
-export const PaymentSection = styled.div`
+interface PaymentSectionProps {
+  error?: boolean
+}
+
+export const PaymentSection = styled.div<PaymentSectionProps>`
   display: flex;
   flex-direction: column;
   gap: 2rem;
   width: 100%;
   background: ${(props) => props.theme['base-card']};
   padding: 2.5rem;
+  border-radius: 6px;
+
+  ${(props) => {
+    if (props.error) {
+      return css`
+        box-shadow: 0 0 0 2px ${(props) => props.theme.red};
+      `
+    }
+  }}
 
   header {
     display: flex;

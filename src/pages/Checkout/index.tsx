@@ -34,6 +34,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Caption } from '../../components/Caption'
 import { useTheme } from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 const DELIVERY_FEE = 3.5
 
@@ -48,7 +49,9 @@ const newOrderFormValidationSchema = zod.object({
   neighborhood: zod.string().min(1, 'Informe o bairro'),
   city: zod.string().min(1, 'Informe a cidade'),
   state: zod.string().min(2, 'Informe o estado'),
-  paymentMethod: zod.enum(['creditCard', 'debitCard', 'money']),
+  paymentMethod: zod.enum(['creditCard', 'debitCard', 'money'], {
+    invalid_type_error: 'Escolha uma forma de pagamento',
+  }),
   products: zod.array(
     zod.object({
       id: zod.string().min(1),
@@ -63,6 +66,7 @@ type newOrderFormData = zod.infer<typeof newOrderFormValidationSchema>
 
 export function Checkout() {
   const theme = useTheme()
+  const nagivate = useNavigate()
   const { cart, removeProductFromCart, updateProductAmountInTheCart } =
     useContext(CartContext)
   const [products, setProducts] = useState<Product[]>([])
@@ -76,7 +80,7 @@ export function Checkout() {
       },
     })
 
-  const { isValid, errors } = formState
+  const { errors } = formState
 
   async function getProducts() {
     const res = await api.get<Product[]>(`/products`).then((res) => res)
@@ -115,9 +119,12 @@ export function Checkout() {
     setValue('deliveryFee', DELIVERY_FEE)
   }, [cart, reducedCartPrice, setValue])
 
-  console.log(errors)
   function onSubmit(data: newOrderFormData) {
-    console.log(data)
+    const stateJSON = JSON.stringify(data)
+
+    localStorage.setItem('@coffee-delivery:order-state-1.0.0', stateJSON)
+
+    nagivate('/order')
   }
 
   return (
@@ -246,7 +253,14 @@ export function Checkout() {
             </div>
           </AddressSection>
 
-          <PaymentSection>
+          <PaymentSection error={!!errors.paymentMethod}>
+            {errors.paymentMethod?.message && (
+              <Caption
+                description={errors.paymentMethod.message}
+                iconColor={theme.red}
+                textColor={theme.red}
+              />
+            )}
             <header>
               <CurrencyDollar />
               <div>

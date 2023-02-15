@@ -1,10 +1,49 @@
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
+import { useContext, useEffect, useState } from 'react'
 import { useTheme } from 'styled-components'
 import { RoundedIcon } from '../../components/RoundedIcon'
+import { CartContext } from '../../contexts/CartContext'
 import { OrderContainer, OrderInfo, OrderInfoSection } from './styles'
+
+interface OrderProps {
+  number: number
+  zipCode: string
+  street: string
+  complement: string
+  neighborhood: string
+  city: string
+  state: string
+  paymentMethod: 'creditCard' | 'debitCard' | 'money'
+  products: {
+    id: string
+    amount: number
+  }[]
+  totalPrice: number
+  deliveryFee: number
+}
+
+const PAYMENT_METHOD = {
+  creditCard: 'Cartão de Crédito',
+  debitCard: 'Cartão de Débito',
+  money: 'Dinheiro',
+}
 
 export function Order() {
   const theme = useTheme()
+  const { clearCartAfterOrder } = useContext(CartContext)
+  const [order, setOrder] = useState<OrderProps>({} as OrderProps)
+
+  useEffect(() => {
+    const storedStateAsJSON = localStorage.getItem(
+      '@coffee-delivery:order-state-1.0.0',
+    )
+
+    if (storedStateAsJSON) {
+      setOrder(JSON.parse(storedStateAsJSON))
+      clearCartAfterOrder()
+    }
+  }, [clearCartAfterOrder])
+
   return (
     <OrderContainer>
       <div>
@@ -20,8 +59,11 @@ export function Order() {
                 <MapPin weight="fill" />
               </RoundedIcon>
               <span>
-                Entrega em <span>Rua João Daniel Martinelli, 102</span> <br />{' '}
-                Farrapos - Porto Alegre, RS
+                Entrega em{' '}
+                <span>
+                  Rua {order.street}, {order.number}
+                </span>{' '}
+                <br /> {order.neighborhood} - {order.city}, {order.state}
               </span>
             </li>
             <li>
@@ -37,7 +79,8 @@ export function Order() {
                 <CurrencyDollar weight="fill" />
               </RoundedIcon>
               <span>
-                Pagamento na entrega <br /> <span>Cartão de Crédito</span>
+                Pagamento na entrega <br />{' '}
+                <span>{PAYMENT_METHOD[order.paymentMethod]}</span>
               </span>
             </li>
           </ul>
