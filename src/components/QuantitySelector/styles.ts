@@ -20,15 +20,20 @@ export const QuantitySelectorContainer = styled.div`
     border: 0;
     background-color: transparent;
 
+    cursor: pointer;
+
     svg {
       color: ${(props) => props.theme.purple};
-      cursor: pointer;
 
       transition: color 0.2s;
 
       &:hover {
         color: ${(props) => props.theme['purple-dark']};
       }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
     }
   }
 `
