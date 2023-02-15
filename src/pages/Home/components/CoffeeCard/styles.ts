@@ -12,10 +12,7 @@ export const CoffeeCardContainer = styled.div`
   height: 19.3rem;
   padding: 0 1.25rem 1.25rem 1.25rem;
   background: ${(props) => props.theme['base-card']};
-  border-top-left-radius: 6px;
-  border-top-right-radius: 36px;
-  border-bottom-left-radius: 36px;
-  border-bottom-right-radius: 6px;
+  border-radius: 6px 36px;
 
   img {
     width: 7.5rem;
@@ -38,6 +35,45 @@ export const CoffeeCardContainer = styled.div`
     line-height: 1.3;
     color: ${(props) => props.theme['base-label']};
   }
+`
+
+export const TagsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.25rem;
+
+  /* & > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.25rem;
+    transform: translateX(100%);
+    animation: scroll-left 25s linear infinite;
+  }
+
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(50%);
+    }
+
+    25% {
+      transform: translateX(-100%);
+    }
+
+    50% {
+      transform: translateX(50%);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  } */
 `
 
 export const BuySection = styled.div`
