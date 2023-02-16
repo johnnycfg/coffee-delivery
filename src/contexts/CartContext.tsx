@@ -29,7 +29,6 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     )
 
     if (storedStateAsJSON) {
-      console.log(storedStateAsJSON)
       return JSON.parse(storedStateAsJSON)
     } else {
       return []

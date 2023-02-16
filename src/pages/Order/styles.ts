@@ -25,8 +25,13 @@ export const OrderInfoSection = styled.section`
   gap: 1rem;
   justify-content: space-between;
 
+  @media screen and (max-width: 900px) {
+    flex-direction: column;
+  }
+
   img {
     max-height: 293px;
+    object-fit: contain;
   }
 `
 
@@ -45,12 +50,12 @@ export const OrderInfo = styled.div`
       return `background-image: linear-gradient(to right, ${props.theme.yellow}, ${props.theme.purple});`
     }}
     border-radius: 7px 37px;
-    height: 100%;
-    left: -1px;
-    top: -1px;
+    height: calc(100% + 2px);
+    left: -2px;
+    top: -2px;
     padding: 1px;
     position: absolute;
-    width: 100%;
+    width: calc(100% + 2px);
     z-index: -1;
   }
 

@@ -42,7 +42,7 @@ export function Order() {
       setOrder(JSON.parse(storedStateAsJSON))
       clearCartAfterOrder()
     }
-  }, [clearCartAfterOrder])
+  }, [])
 
   return (
     <OrderContainer>

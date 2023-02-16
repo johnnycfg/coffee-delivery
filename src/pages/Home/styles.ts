@@ -26,4 +26,8 @@ export const CoffeeList = styled.div`
   width: 100%;
   gap: 2.5rem 2rem;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 550px) {
+    justify-content: center;
+  }
 `

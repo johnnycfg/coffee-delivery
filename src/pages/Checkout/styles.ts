@@ -5,6 +5,10 @@ export const CheckoutForm = styled.form`
   gap: 2rem;
 
   margin: 2.5rem 0;
+
+  @media screen and (max-width: 940px) {
+    flex-direction: column;
+  }
 `
 
 export const CompleteOrderSection = styled.div`
@@ -13,6 +17,10 @@ export const CompleteOrderSection = styled.div`
   gap: 0.75rem;
   max-width: 640px;
   width: 100%;
+
+  @media screen and (max-width: 940px) {
+    max-width: 100%;
+  }
 
   h1 {
     font-size: 1.125rem;
@@ -41,8 +49,8 @@ export const AddressSection = styled.div`
 
     svg {
       color: ${(props) => props.theme['yellow-dark']};
-      width: 1.375rem;
-      height: 1.375rem;
+      min-width: 1.375rem;
+      min-height: 1.375rem;
     }
 
     h2 {
@@ -66,6 +74,10 @@ export const FormGroup = styled.div<FormGroupProps>`
   flex-grow: ${(props) => (props.fullWidth ? '1' : '0')};
   flex-direction: column;
   gap: 0.5rem;
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
 `
 
 interface InputProps {
@@ -81,6 +93,10 @@ export const Input = styled.input<InputProps>`
   border-radius: 0.25rem;
 
   color: ${(props) => props.theme['base-text']};
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
 
   &::placeholder {
     color: ${(props) => props.theme['base-label']};
@@ -132,8 +148,8 @@ export const PaymentSection = styled.div<PaymentSectionProps>`
 
     svg {
       color: ${(props) => props.theme.purple};
-      width: 1.375rem;
-      height: 1.375rem;
+      min-width: 1.375rem;
+      min-height: 1.375rem;
     }
 
     h2 {
@@ -146,7 +162,8 @@ export const PaymentSection = styled.div<PaymentSectionProps>`
 export const RadioGroupContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
+  flex-wrap: wrap;
 
   input[type='radio'] {
     position: absolute;
@@ -169,7 +186,7 @@ export const RadioGroupContainer = styled.div`
 
   label {
     display: flex;
-    flex: 1;
+    min-width: 11.25rem;
     align-items: center;
     gap: 0.75rem;
 
@@ -205,6 +222,10 @@ export const SelectedCoffeeSection = styled.div`
   max-width: 448px;
   width: 100%;
 
+  @media screen and (max-width: 940px) {
+    max-width: 100%;
+  }
+
   h1 {
     font-size: 1.125rem;
     font-family: 'Baloo 2', sans-serif;
@@ -224,6 +245,10 @@ export const OrderSummarySection = styled.section`
   border-top-right-radius: 36px;
   border-bottom-left-radius: 36px;
   border-bottom-right-radius: 6px;
+
+  @media screen and (max-width: 470px) {
+    padding: 2.5rem 1rem;
+  }
 `
 
 export const OrderList = styled.div`
@@ -236,8 +261,13 @@ export const OrderItem = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1.25rem;
+  max-width: 23rem;
 
   padding: 0.5rem 0.25rem;
+
+  @media screen and (max-width: 380px) {
+    gap: 1rem;
+  }
 
   img {
     width: 4rem;
@@ -350,4 +380,59 @@ export const Divider = styled.hr`
   height: 1px;
   background-color: ${(props) => props.theme['base-hover']};
   border: 0;
+`
+
+export const EmptyCartContainer = styled.div`
+  display: flex;
+  gap: 3.5rem;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: ${(props) => props.theme['base-title']};
+  }
+
+  p {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    color: ${(props) => props.theme['base-subtitle']};
+  }
+
+  button {
+    border: 0;
+    border-radius: 6px;
+    padding: 0.75rem 0.5rem;
+    width: 100%;
+    background: ${(props) => props.theme.yellow};
+    color: ${(props) => props.theme.white};
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+
+    transition: background 0.2s;
+
+    &:hover {
+      background: ${(props) => props.theme['yellow-dark']};
+    }
+  }
+
+  img {
+    max-width: 400px;
+    width: 100%;
+    object-fit: contain;
+  }
 `

@@ -32,6 +32,10 @@ export const LocationButton = styled.button`
     width: 2rem;
     height: 2rem;
   }
+
+  @media screen and (max-width: 380px) {
+    display: none;
+  }
 `
 
 interface CartButtonProps {

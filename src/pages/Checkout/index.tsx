@@ -17,6 +17,7 @@ import {
   CompleteOrderSection,
   ConfirmOrderButton,
   Divider,
+  EmptyCartContainer,
   FormGroup,
   Input,
   OrderItem,
@@ -66,7 +67,7 @@ type newOrderFormData = zod.infer<typeof newOrderFormValidationSchema>
 
 export function Checkout() {
   const theme = useTheme()
-  const nagivate = useNavigate()
+  const navigate = useNavigate()
   const { cart, removeProductFromCart, updateProductAmountInTheCart } =
     useContext(CartContext)
   const [products, setProducts] = useState<Product[]>([])
@@ -113,6 +114,8 @@ export function Checkout() {
 
   const totalPriceWithDeliveryFee = reducedCartPrice + DELIVERY_FEE
 
+  const cartIsEmpty = cart.length < 1
+
   useEffect(() => {
     setValue('products', cart)
     setValue('totalPrice', reducedCartPrice)
@@ -124,254 +127,279 @@ export function Checkout() {
 
     localStorage.setItem('@coffee-delivery:order-state-1.0.0', stateJSON)
 
-    nagivate('/order')
+    navigate('/order')
   }
 
   return (
     <main>
       <CheckoutForm onSubmit={handleSubmit(onSubmit)}>
-        <CompleteOrderSection>
-          <h1>Complete seu pedido</h1>
-
-          <AddressSection>
-            <header>
-              <MapPinLine />
-              <div>
-                <h2>Endereço de Entrega</h2>
-                <p>Informe o endereço onde deseja receber seu pedido</p>
-              </div>
-            </header>
-
-            <FormGroup>
-              <Input
-                placeholder="CEP"
-                style={{ width: '228px' }}
-                {...register('zipCode')}
-                error={!!errors.zipCode}
-              />
-              {errors.zipCode?.message && (
-                <Caption
-                  description={errors.zipCode.message}
-                  iconColor={theme.red}
-                  textColor={theme.red}
-                />
-              )}
-            </FormGroup>
-
-            <FormGroup fullWidth>
-              <Input
-                placeholder="Rua"
-                fullWidth
-                {...register('street')}
-                error={!!errors.street}
-              />
-              {errors.street?.message && (
-                <Caption
-                  description={errors.street.message}
-                  iconColor={theme.red}
-                  textColor={theme.red}
-                />
-              )}
-            </FormGroup>
-
+        {cartIsEmpty ? (
+          <EmptyCartContainer>
             <div>
-              <FormGroup>
-                <Input
-                  placeholder="Número"
-                  {...register('number', { valueAsNumber: true })}
-                  error={!!errors.number}
-                />
-                {errors.number?.message && (
-                  <Caption
-                    description={errors.number.message}
-                    iconColor={theme.red}
-                    textColor={theme.red}
-                  />
-                )}
-              </FormGroup>
-              <FormGroup fullWidth>
-                <Input
-                  placeholder="Complemento"
-                  fullWidth
-                  {...register('complement')}
-                  error={!!errors.complement}
-                />
-                {errors.complement?.message && (
-                  <Caption
-                    description={errors.complement.message}
-                    iconColor={theme.red}
-                    textColor={theme.red}
-                  />
-                )}
-              </FormGroup>
+              <h1>Parece que a sua cesta está vazia 😞</h1>
+              <p>
+                Que tal procurar por alguns cafés para melhorar o seu dia ? 😜
+              </p>
+
+              <button type="button" onClick={() => navigate('/')}>
+                VER LISTAGEM DE CAFÉS
+              </button>
             </div>
-            <div>
-              <FormGroup>
-                <Input
-                  placeholder="Bairro"
-                  {...register('neighborhood')}
-                  error={!!errors.neighborhood}
-                />
-                {errors.neighborhood?.message && (
-                  <Caption
-                    description={errors.neighborhood.message}
-                    iconColor={theme.red}
-                    textColor={theme.red}
+            <img
+              src="./src/assets/empty-basket.png"
+              alt="cesta de mercado vazia"
+            />
+          </EmptyCartContainer>
+        ) : (
+          <>
+            <CompleteOrderSection>
+              <h1>Complete seu pedido</h1>
+
+              <AddressSection>
+                <header>
+                  <MapPinLine />
+                  <div>
+                    <h2>Endereço de Entrega</h2>
+                    <p>Informe o endereço onde deseja receber seu pedido</p>
+                  </div>
+                </header>
+
+                <FormGroup>
+                  <Input
+                    placeholder="CEP"
+                    style={{
+                      width: '228px',
+                    }}
+                    {...register('zipCode')}
+                    error={!!errors.zipCode}
                   />
-                )}
-              </FormGroup>
-              <FormGroup fullWidth>
-                <Input
-                  placeholder="Cidade"
-                  fullWidth
-                  {...register('city')}
-                  error={!!errors.city}
-                />
-                {errors.city?.message && (
-                  <Caption
-                    description={errors.city.message}
-                    iconColor={theme.red}
-                    textColor={theme.red}
+                  {errors.zipCode?.message && (
+                    <Caption
+                      description={errors.zipCode.message}
+                      iconColor={theme.red}
+                      textColor={theme.red}
+                    />
+                  )}
+                </FormGroup>
+
+                <FormGroup fullWidth>
+                  <Input
+                    placeholder="Rua"
+                    fullWidth
+                    {...register('street')}
+                    error={!!errors.street}
                   />
-                )}
-              </FormGroup>
-              <FormGroup>
-                <Input
-                  placeholder="UF"
-                  style={{ width: '60px' }}
-                  {...register('state')}
-                  error={!!errors.state}
-                />
-                {errors.state?.message && (
-                  <Caption
-                    description={errors.state.message}
-                    iconColor={theme.red}
-                    textColor={theme.red}
-                  />
-                )}
-              </FormGroup>
-            </div>
-          </AddressSection>
+                  {errors.street?.message && (
+                    <Caption
+                      description={errors.street.message}
+                      iconColor={theme.red}
+                      textColor={theme.red}
+                    />
+                  )}
+                </FormGroup>
 
-          <PaymentSection error={!!errors.paymentMethod}>
-            {errors.paymentMethod?.message && (
-              <Caption
-                description={errors.paymentMethod.message}
-                iconColor={theme.red}
-                textColor={theme.red}
-              />
-            )}
-            <header>
-              <CurrencyDollar />
-              <div>
-                <h2>Pagamento</h2>
-                <p>
-                  O pagamento é feito na entrega. Escolha a forma que deseja
-                  pagar
-                </p>
-              </div>
-            </header>
-
-            <RadioGroupContainer>
-              <input
-                type="radio"
-                value="creditCard"
-                id="creditCard"
-                {...register('paymentMethod')}
-              />
-              <label htmlFor="creditCard">
-                <CreditCard />
-                CARTÃO DE CRÉDITO
-              </label>
-
-              <input
-                type="radio"
-                value="debitCard"
-                id="debitCard"
-                {...register('paymentMethod')}
-              />
-              <label htmlFor="debitCard">
-                <Bank />
-                CARTÃO DE DÉBITO
-              </label>
-
-              <input
-                type="radio"
-                value="money"
-                id="money"
-                {...register('paymentMethod')}
-              />
-              <label htmlFor="money">
-                <Money />
-                DINHEIRO
-              </label>
-            </RadioGroupContainer>
-          </PaymentSection>
-        </CompleteOrderSection>
-
-        <SelectedCoffeeSection>
-          <h1>Cafés selecionados</h1>
-
-          <OrderSummarySection>
-            <OrderList>
-              {detailedCart.map((cartItem) => {
-                return (
-                  <>
-                    <OrderItem key={cartItem.id}>
-                      <img
-                        src={cartItem.image}
-                        alt="xicara de café de café expresso tradicional"
+                <div>
+                  <FormGroup>
+                    <Input
+                      placeholder="Número"
+                      {...register('number', { valueAsNumber: true })}
+                      error={!!errors.number}
+                    />
+                    {errors.number?.message && (
+                      <Caption
+                        description={errors.number.message}
+                        iconColor={theme.red}
+                        textColor={theme.red}
                       />
-                      <div>
-                        <h2>{cartItem.name}</h2>
-                        <OrderItemActions>
-                          <QuantitySelector
-                            initialAmount={cartItem.amount}
-                            limitAmount={cartItem.availableAmount ?? 0}
-                            onChange={(value) =>
-                              updateProductAmountInTheCart({
-                                id: cartItem.id!,
-                                amount: value,
-                              })
-                            }
+                    )}
+                  </FormGroup>
+                  <FormGroup fullWidth>
+                    <Input
+                      placeholder="Complemento"
+                      fullWidth
+                      {...register('complement')}
+                      error={!!errors.complement}
+                    />
+                    {errors.complement?.message && (
+                      <Caption
+                        description={errors.complement.message}
+                        iconColor={theme.red}
+                        textColor={theme.red}
+                      />
+                    )}
+                  </FormGroup>
+                </div>
+                <div>
+                  <FormGroup>
+                    <Input
+                      placeholder="Bairro"
+                      {...register('neighborhood')}
+                      error={!!errors.neighborhood}
+                    />
+                    {errors.neighborhood?.message && (
+                      <Caption
+                        description={errors.neighborhood.message}
+                        iconColor={theme.red}
+                        textColor={theme.red}
+                      />
+                    )}
+                  </FormGroup>
+                  <FormGroup fullWidth>
+                    <Input
+                      placeholder="Cidade"
+                      fullWidth
+                      {...register('city')}
+                      error={!!errors.city}
+                    />
+                    {errors.city?.message && (
+                      <Caption
+                        description={errors.city.message}
+                        iconColor={theme.red}
+                        textColor={theme.red}
+                      />
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Input
+                      placeholder="UF"
+                      style={{ width: '60px' }}
+                      {...register('state')}
+                      error={!!errors.state}
+                    />
+                    {errors.state?.message && (
+                      <Caption
+                        description={errors.state.message}
+                        iconColor={theme.red}
+                        textColor={theme.red}
+                      />
+                    )}
+                  </FormGroup>
+                </div>
+              </AddressSection>
+
+              <PaymentSection error={!!errors.paymentMethod}>
+                {errors.paymentMethod?.message && (
+                  <Caption
+                    description={errors.paymentMethod.message}
+                    iconColor={theme.red}
+                    textColor={theme.red}
+                  />
+                )}
+                <header>
+                  <CurrencyDollar />
+                  <div>
+                    <h2>Pagamento</h2>
+                    <p>
+                      O pagamento é feito na entrega. Escolha a forma que deseja
+                      pagar
+                    </p>
+                  </div>
+                </header>
+
+                <RadioGroupContainer>
+                  <input
+                    type="radio"
+                    value="creditCard"
+                    id="creditCard"
+                    {...register('paymentMethod')}
+                  />
+                  <label htmlFor="creditCard">
+                    <CreditCard />
+                    CARTÃO DE CRÉDITO
+                  </label>
+
+                  <input
+                    type="radio"
+                    value="debitCard"
+                    id="debitCard"
+                    {...register('paymentMethod')}
+                  />
+                  <label htmlFor="debitCard">
+                    <Bank />
+                    CARTÃO DE DÉBITO
+                  </label>
+
+                  <input
+                    type="radio"
+                    value="money"
+                    id="money"
+                    {...register('paymentMethod')}
+                  />
+                  <label htmlFor="money">
+                    <Money />
+                    DINHEIRO
+                  </label>
+                </RadioGroupContainer>
+              </PaymentSection>
+            </CompleteOrderSection>
+
+            <SelectedCoffeeSection>
+              <h1>Cafés selecionados</h1>
+
+              <OrderSummarySection>
+                <OrderList>
+                  {detailedCart.map((cartItem) => {
+                    return (
+                      <>
+                        <OrderItem key={cartItem.id}>
+                          <img
+                            src={cartItem.image}
+                            alt="xicara de café de café expresso tradicional"
                           />
-                          <RemoveItemButton
-                            type="button"
-                            onClick={() => removeProductFromCart(cartItem.id!)}
-                          >
-                            <Trash /> REMOVER
-                          </RemoveItemButton>
-                        </OrderItemActions>
-                      </div>
-                      <span>R$ {cartItem.totalPrice.toFixed(2)}</span>
-                    </OrderItem>
+                          <div>
+                            <h2>{cartItem.name}</h2>
+                            <OrderItemActions>
+                              <QuantitySelector
+                                initialAmount={cartItem.amount}
+                                limitAmount={cartItem.availableAmount ?? 0}
+                                onChange={(value) =>
+                                  updateProductAmountInTheCart({
+                                    id: cartItem.id!,
+                                    amount: value,
+                                  })
+                                }
+                              />
+                              <RemoveItemButton
+                                type="button"
+                                onClick={() =>
+                                  removeProductFromCart(cartItem.id!)
+                                }
+                              >
+                                <Trash /> REMOVER
+                              </RemoveItemButton>
+                            </OrderItemActions>
+                          </div>
+                          <span>R$ {cartItem.totalPrice.toFixed(2)}</span>
+                        </OrderItem>
 
-                    <Divider />
-                  </>
-                )
-              })}
+                        <Divider />
+                      </>
+                    )
+                  })}
 
-              <OrderSummary>
-                <div>
-                  <span>Total de itens</span>
-                  <span>R$ {reducedCartPrice.toFixed(2)}</span>
-                </div>
-                <div>
-                  <span>Entrega</span>
-                  <span>R$ {DELIVERY_FEE.toFixed(2)}</span>
-                </div>
-                <div>
-                  <span>Total</span>
-                  <span>R$ {totalPriceWithDeliveryFee.toFixed(2)}</span>
-                </div>
-              </OrderSummary>
-            </OrderList>
+                  <OrderSummary>
+                    <div>
+                      <span>Total de itens</span>
+                      <span>R$ {reducedCartPrice.toFixed(2)}</span>
+                    </div>
+                    <div>
+                      <span>Entrega</span>
+                      <span>R$ {DELIVERY_FEE.toFixed(2)}</span>
+                    </div>
+                    <div>
+                      <span>Total</span>
+                      <span>R$ {totalPriceWithDeliveryFee.toFixed(2)}</span>
+                    </div>
+                  </OrderSummary>
+                </OrderList>
 
-            <ConfirmOrderButton type="submit">
-              CONFIRMAR PEDIDO
-            </ConfirmOrderButton>
-          </OrderSummarySection>
-        </SelectedCoffeeSection>
+                <ConfirmOrderButton type="submit">
+                  CONFIRMAR PEDIDO
+                </ConfirmOrderButton>
+              </OrderSummarySection>
+            </SelectedCoffeeSection>
+          </>
+        )}
       </CheckoutForm>
     </main>
   )

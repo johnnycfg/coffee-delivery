@@ -8,6 +8,10 @@ export const IntroSectionContainer = styled.section`
 
   padding: 6rem 0;
 
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+
   & > div {
     display: flex;
     flex-direction: column;
@@ -46,5 +50,11 @@ export const IntroSectionContainer = styled.section`
       align-items: center;
       gap: 0.875rem;
     }
+  }
+
+  img {
+    max-width: 476px;
+    width: 100%;
+    object-fit: contain;
   }
 `
