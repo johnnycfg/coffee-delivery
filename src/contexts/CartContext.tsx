@@ -87,6 +87,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   }
 
   async function updateProductAmountInTheCart({ id, amount }: CartItem) {
+    if (!id) return
+
     const product = await api
       .get<Product>(`/products/${id}`)
       .then((res) => res.data)

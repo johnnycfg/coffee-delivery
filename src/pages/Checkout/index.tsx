@@ -77,7 +77,6 @@ export function Checkout() {
       resolver: zodResolver(newOrderFormValidationSchema),
       defaultValues: {
         products: cart,
-        number: 0,
       },
     })
 
@@ -93,20 +92,23 @@ export function Checkout() {
     getProducts()
   }, [])
 
-  const detailedCart = cart.map((cartItem) => {
-    const product = products.find((product) => product.id === cartItem.id)
+  const detailedCart =
+    products.length < 1
+      ? []
+      : cart.map((cartItem) => {
+          const product = products.find((product) => product.id === cartItem.id)
 
-    const totalPrice = cartItem.amount * (product?.price ?? 0)
+          const totalPrice = cartItem.amount * (product?.price ?? 0)
 
-    return {
-      id: product?.id,
-      name: product?.name,
-      image: product?.image,
-      amount: cartItem.amount,
-      availableAmount: product?.availableAmount,
-      totalPrice,
-    }
-  })
+          return {
+            id: product?.id,
+            name: product?.name,
+            image: product?.image,
+            amount: cartItem.amount,
+            availableAmount: product?.availableAmount,
+            totalPrice,
+          }
+        })
 
   const reducedCartPrice = detailedCart.reduce((acc, cur) => {
     return acc + cur.totalPrice
@@ -338,44 +340,45 @@ export function Checkout() {
 
               <OrderSummarySection>
                 <OrderList>
-                  {detailedCart.map((cartItem) => {
-                    return (
-                      <>
-                        <OrderItem key={cartItem.id}>
-                          <img
-                            src={cartItem.image}
-                            alt="xicara de café de café expresso tradicional"
-                          />
-                          <div>
-                            <h2>{cartItem.name}</h2>
-                            <OrderItemActions>
-                              <QuantitySelector
-                                initialAmount={cartItem.amount}
-                                limitAmount={cartItem.availableAmount ?? 0}
-                                onChange={(value) =>
-                                  updateProductAmountInTheCart({
-                                    id: cartItem.id!,
-                                    amount: value,
-                                  })
-                                }
-                              />
-                              <RemoveItemButton
-                                type="button"
-                                onClick={() =>
-                                  removeProductFromCart(cartItem.id!)
-                                }
-                              >
-                                <Trash /> REMOVER
-                              </RemoveItemButton>
-                            </OrderItemActions>
-                          </div>
-                          <span>R$ {cartItem.totalPrice.toFixed(2)}</span>
-                        </OrderItem>
+                  {detailedCart.length > 0 &&
+                    detailedCart.map((cartItem) => {
+                      return (
+                        <>
+                          <OrderItem key={cartItem.id}>
+                            <img
+                              src={cartItem.image}
+                              alt="xicara de café de café expresso tradicional"
+                            />
+                            <div>
+                              <h2>{cartItem.name}</h2>
+                              <OrderItemActions>
+                                <QuantitySelector
+                                  initialAmount={cartItem.amount}
+                                  limitAmount={cartItem.availableAmount ?? 0}
+                                  onChange={(value) =>
+                                    updateProductAmountInTheCart({
+                                      id: cartItem.id!,
+                                      amount: value,
+                                    })
+                                  }
+                                />
+                                <RemoveItemButton
+                                  type="button"
+                                  onClick={() =>
+                                    removeProductFromCart(cartItem.id!)
+                                  }
+                                >
+                                  <Trash /> REMOVER
+                                </RemoveItemButton>
+                              </OrderItemActions>
+                            </div>
+                            <span>R$ {cartItem.totalPrice.toFixed(2)}</span>
+                          </OrderItem>
 
-                        <Divider />
-                      </>
-                    )
-                  })}
+                          <Divider />
+                        </>
+                      )
+                    })}
 
                   <OrderSummary>
                     <div>

@@ -73,6 +73,7 @@ export const FormGroup = styled.div<FormGroupProps>`
   display: flex;
   flex-grow: ${(props) => (props.fullWidth ? '1' : '0')};
   flex-direction: column;
+  height: fit-content;
   gap: 0.5rem;
 
   @media screen and (max-width: 600px) {
